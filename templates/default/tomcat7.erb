@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Tomcat: Start/Stop Tomcat
+#
+# chkconfig: - 90 10
+# description: Tomcat is a Java application Server.
+
+. /etc/init.d/functions
+. /etc/sysconfig/network
+
+TOMCAT_USER=<%= node["tomcat"]["user"] %>
+TOMCAT_LANG=ja_JP.UTF-8
+
+CATALINA_BASE=<%= node["tomcat"]["base"] %>
+CATALINA_HOME=<%= node["tomcat"]["home"] %>
+export JRE_HOME=$JAVA_HOME/jre
+LOCKFILE=/var/lock/subsys/tomcat
+
+RETVAL=0
+
+start(){
+   echo "Starting Tomcat: "
+   su - $TOMCAT_USER -c "CATALINA_BASE=$CATALINA_BASE CATALINA_HOME=$CATALINA_HOME LANG=$TOMCAT_LANG $CATALINA_HOME/bin/startup.sh"
+   RETVAL=$?
+   echo
+   [ $RETVAL -eq 0 ] && touch $LOCKFILE
+   return $RETVAL
+}
+
+stop(){
+   echo "Shutting down Tomcat: "
+   $CATALINA_HOME/bin/shutdown.sh
+   RETVAL=$?
+   echo
+   [ $RETVAL -eq 0 ] && rm -f $LOCKFILE
+   return $RETVAL
+}
+
+case "$1" in
+   start)
+      start
+      ;;
+   stop)
+      stop
+      ;;
+   restart)
+      stop
+      start
+      ;;
+   status)
+      status tomcat
+      ;;
+   *)
+      echo $"Usage: $0 {start|stop|restart|status}"
+      exit 1
+      ;;
+esac
+exit $?
