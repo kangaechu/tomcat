@@ -55,6 +55,7 @@ end
 bash "install tomcat" do
   user "root"
   cwd "#{node.tomcat.root}"
+  flags "-x -e"
   code <<-EOH
   mkdir -p releases
   unzip -q #{Chef::Config[:file_cache_path]}/#{filename}.zip -d releases
@@ -72,11 +73,15 @@ bash "setup tomcat environment" do
   user "tomcat"
   group "tomcat"
   cwd "#{node.tomcat.root}"
+  flags "-x -e"
   code <<-EOH
   mkdir -p base
   cp -rp current/{conf,logs,temp,work} base
   mkdir -p base/releases/v0.0.1
-  ln -s base/releases/v0.0.1 webapps
+  cd base
+  ln -s releases/v0.0.1 webapps
+  cd ..
+  cp -rp current/webapps/* base/webapps/
   chown -R tomcat.tomcat #{node.tomcat.root}
   EOH
   not_if do
