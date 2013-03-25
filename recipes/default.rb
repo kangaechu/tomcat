@@ -85,7 +85,7 @@ bash "setup tomcat environment" do
   chown -R tomcat.tomcat #{node.tomcat.root}
   EOH
   not_if do
-    ::File.exists?("#{node.tomcat.root}/releases/#{filename}/base")
+    ::File.exists?("#{node.tomcat.root}/releases/#{filename}/bin")
   end
 end
 
