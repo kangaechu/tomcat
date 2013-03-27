@@ -76,7 +76,7 @@ bash "setup tomcat environment" do
   flags "-x -e"
   code <<-EOH
   mkdir -p base
-  cp -rp current/{conf,logs,temp,work} base
+  cp -rp current/{conf,lib,logs,temp,work} base
   mkdir -p base/releases/v0.0.1
   cd base
   ln -s releases/v0.0.1 webapps
