@@ -13,7 +13,7 @@ TOMCAT_LANG=ja_JP.UTF-8
 
 CATALINA_BASE=<%= node["tomcat"]["base"] %>
 CATALINA_HOME=<%= node["tomcat"]["home"] %>
-export JRE_HOME=$JAVA_HOME/jre
+export JRE_HOME=<%= node[:java][:java_home] %>/jre
 LOCKFILE=/var/lock/subsys/tomcat
 
 RETVAL=0
