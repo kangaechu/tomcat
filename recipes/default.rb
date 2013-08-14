@@ -19,7 +19,7 @@
 
 include_recipe "java"
 
-version = "7.0.41"
+version = node['tomcat']['version']
 filename = "apache-tomcat-#{version}"
 deployDir = "/usr/local/tomcat"
 
